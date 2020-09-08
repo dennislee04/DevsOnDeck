@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dennislee.devsondeck.models.Organization;
+import com.dennislee.devsondeck.models.Position;
 import com.dennislee.devsondeck.repositories.OrganizationRepository;
 
 @Service
@@ -50,5 +51,23 @@ public class OrganizationService {
 	
 	public Organization getByEmail(String email) {
 		return this.oRepo.findByorgEmail(email);
+	}
+	
+	//Add Position to organization
+	public void addPosition(Organization organization, Position position) {
+		// get the all the positions from organization
+		List<Position> positions = organization.getPositions();
+		
+		// Add the position
+		positions.add(position);
+		
+		// Update Database
+		this.oRepo.save(organization);
+	}
+	
+	// Remove Position from organization
+	public void removePosition(Organization organization, Position position) {
+		organization.getPositions().remove(position);
+		this.oRepo.save(organization);
 	}
 }

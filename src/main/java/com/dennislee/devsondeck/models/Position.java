@@ -34,10 +34,9 @@ public class Position {
 	@NotBlank
 	private String description;
 	
-	@Size(min= 1)
-	@Size(max= 5)
 	@Transient
-	private List<String> skills;
+	@Size(max = 5)
+	private List<Skill> skills;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id")
@@ -87,14 +86,6 @@ public class Position {
 		this.description = description;
 	}
 
-	public List<String> getSkills() {
-		return skills;
-	}
-
-	public void setSkills(List<String> skills) {
-		this.skills = skills;
-	}
-
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -109,6 +100,22 @@ public class Position {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
+
+	public Organization getOrg() {
+		return org;
+	}
+
+	public void setOrg(Organization org) {
+		this.org = org;
 	}
 	
 }

@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,10 @@ import com.dennislee.devsondeck.models.Organization;
 import com.dennislee.devsondeck.models.User;
 import com.dennislee.devsondeck.services.OrganizationService;
 import com.dennislee.devsondeck.services.PositionService;
+import com.dennislee.devsondeck.services.SkillService;
 import com.dennislee.devsondeck.services.UserService;
+import com.dennislee.devsondeck.uservalidator.OrgValidator;
+import com.dennislee.devsondeck.uservalidator.UserValidator;
 
 @Controller
 public class MainController {
@@ -29,6 +33,15 @@ public class MainController {
 	
 	@Autowired
 	private PositionService pService;
+	
+	@Autowired
+	private SkillService sService;
+	
+	@Autowired
+	private UserValidator uValidator;
+	
+	@Autowired
+	private OrgValidator oValidator;
 
 	@RequestMapping("/devs/register")
 	public String registerDev(@ModelAttribute("user") User user){
@@ -37,6 +50,7 @@ public class MainController {
 	
 	@PostMapping("/devs/register")
 	public String registerDeveloper(@Valid @ModelAttribute("user") User newUser, BindingResult result, HttpSession session) {
+		uValidator.validate(newUser, result);
 		if (result.hasErrors()) {
 			// if there are any validation errors
 			// we want to return them to the register dev page
@@ -45,7 +59,7 @@ public class MainController {
 		else {
 			User user = this.uService.registerUser(newUser);
 			session.setAttribute("user_s", user);
-			return "redirect:/devs/register";
+			return "redirect:/devs/skills/languages";
 		}
 	}
 	
@@ -63,9 +77,17 @@ public class MainController {
 		else {
 			User user = this.uService.getByEmail(email);
 			session.setAttribute("user_s", user);
-			System.out.println("You have logged in as user: " + user.getFirstName() + user.getLastName());
-			return "redirect:/devs/login";
+//			System.out.println("You have logged in as user: " + user.getFirstName() + user.getLastName());
+			return "redirect:/devs/skills/languages";
 		}
+	}
+	
+	@RequestMapping("/devs/skills/languages")
+	public String languagesPage(Model viewModel, HttpSession session) {
+		User user = (User) session.getAttribute("user_s");
+		session.setAttribute("user_s", user);
+		viewModel.addAttribute("user", user);
+		return "language.jsp";
 	}
 	
 	@RequestMapping("/orgs/register")
@@ -75,6 +97,7 @@ public class MainController {
 	
 	@PostMapping("/orgs/register")
 	public String registerOrganization(@Valid @ModelAttribute("organization") Organization newOrg, BindingResult result, HttpSession session) {
+		oValidator.validate(newOrg, result);
 		if (result.hasErrors()) {
 			// if there are any validation errors
 			// we want to return them to the register org page
@@ -83,7 +106,7 @@ public class MainController {
 		else {
 			Organization org = this.oService.registerOrg(newOrg);
 			session.setAttribute("organization_s", org);
-			return "redirect:/orgs/register";
+			return "redirect:/orgs/dashboard";
 		}
 	}
 	
@@ -102,7 +125,27 @@ public class MainController {
 			Organization org = this.oService.getByEmail(email);
 			session.setAttribute("organization_s", org);
 			System.out.println("You have logged in as Organization:" + org.getOrgName());
-			return "redirect:/orgs/login";
+			return "redirect:/orgs/dashboard";
 		}
+	}
+	
+	@RequestMapping("/orgs/dashboard")
+	public String orgDashbaord(Model viewModel, HttpSession session) {
+		Organization organization = (Organization) session.getAttribute("organization_s");
+		session.setAttribute("organization_s", organization);
+		viewModel.addAttribute("organization", organization);
+		return "orgDashboard.jsp";
+	}
+	
+	@RequestMapping("/logout/org")
+	public String logoutOrg(HttpSession session) {
+		session.invalidate();
+		return "redirect:/orgs/login";
+	}
+	
+	@RequestMapping("/logout/dev")
+	public String logoutDev(HttpSession session) {
+		session.invalidate();
+		return "redirect:/devs/login";
 	}
 }

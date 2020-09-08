@@ -45,12 +45,10 @@ public class User {
 	@NotBlank
 	private String state;
 	
-	@Size(min= 1)
-	@Size(max= 5)
 	@Transient
-	private List<String> skills;
-	
-	@Transient
+	@Size(max = 5)
+	private List<Skill> skills;
+
 	private String bio;
 	
 	@Size(min= 8)
@@ -135,14 +133,6 @@ public class User {
 		this.state = state;
 	}
 
-	public List<String> getSkills() {
-		return skills;
-	}
-
-	public void setSkills(List<String> skills) {
-		this.skills = skills;
-	}
-
 	public String getBio() {
 		return bio;
 	}
@@ -181,6 +171,14 @@ public class User {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
 	}
 	
 }

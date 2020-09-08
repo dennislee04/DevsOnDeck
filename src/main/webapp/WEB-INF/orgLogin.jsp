@@ -15,8 +15,7 @@
 				<h4>Let's Find You Some Candidates!</h4>
 				<div class="row">
 					<div class="col">
-
-						<p>${ loginError }</p>
+						<p>${loginError}</p>
 						<form method="POST" action="/orglogin">
 							<div class="form-group">
 						    	<label>Email:</label>

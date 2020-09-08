@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dennislee.devsondeck.models.Skill;
 import com.dennislee.devsondeck.models.User;
 import com.dennislee.devsondeck.repositories.UserRepository;
 
@@ -50,5 +51,23 @@ public class UserService {
 	
 	public User getByEmail(String email) {
 		return this.uRepo.findByEmail(email);
+	}
+	
+	//Add Skill to user
+	public void addSkill(User user, Skill skill) {
+		// get the all the current user's skills
+		List<Skill> skills = user.getSkills();
+		
+		// Add the skill
+		skills.add(skill);
+		
+		// Update Database
+		this.uRepo.save(user);
+	}
+	
+	// Remove Skill from user
+	public void removeSKill(User user, Skill skill) {
+		user.getSkills().remove(skill);
+		this.uRepo.save(user);
 	}
 }

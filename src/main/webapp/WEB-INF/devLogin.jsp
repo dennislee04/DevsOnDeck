@@ -15,7 +15,7 @@
 				<h4>Let's Connect You To A Job!</h4>
 				<div class="row">
 					<div class="col">
-						<p>${ loginError }</p>
+						<p>${loginError}</p>
 						<form method="POST" action="/devlogin">
 							<div class="form-group">
 						    	<label>Email:</label>
