@@ -45,9 +45,19 @@ public class User {
 	@NotBlank
 	private String state;
 	
+	private String skillOne;
+	
+	private String skillTwo;
+	
+	private String skillThree;
+	
+	private String skillFour;
+	
+	private String skillFive;
+	
 	@Transient
 	@Size(max = 5)
-	private List<Skill> skills;
+	private List<String> skills;
 
 	private String bio;
 	
@@ -173,12 +183,63 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<Skill> getSkills() {
+	public List<String> getSkills() {
+		String one = this.getSkillOne();
+		skills.add(one);
+		String two = this.getSkillTwo();
+		skills.add(two);
+		String three = this.getSkillThree();
+		skills.add(three);
+		String four = this.getSkillFour();
+		skills.add(four);
+		String five = this.getSkillFive();
+		skills.add(five);
+
 		return skills;
 	}
 
-	public void setSkills(List<Skill> skills) {
+	public void setSkills(List<String> skills) {
 		this.skills = skills;
+	}
+
+	public String getSkillOne() {
+		return skillOne;
+	}
+
+	public String getSkillTwo() {
+		return skillTwo;
+	}
+
+	public void setSkillTwo(String skillTwo) {
+		this.skillTwo = skillTwo;
+	}
+
+	public String getSkillThree() {
+		return skillThree;
+	}
+
+	public void setSkillThree(String skillThree) {
+		this.skillThree = skillThree;
+	}
+
+	public String getSkillFour() {
+		return skillFour;
+	}
+
+	public void setSkillFour(String skillFour) {
+		this.skillFour = skillFour;
+	}
+
+	public String getSkillFive() {
+		return skillFive;
+	}
+
+	public void setSkillFive(String skillFive) {
+		this.skillFive = skillFive;
+	}
+
+	public void setSkillOne(String skillOne) {
+		this.skillOne = skillOne;
 	}
 	
 }

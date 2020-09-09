@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dennislee.devsondeck.models.Position;
-import com.dennislee.devsondeck.models.Skill;
 import com.dennislee.devsondeck.repositories.PositionRepository;
 
 @Service
@@ -20,9 +19,9 @@ public class PositionService {
 	}
 	
 	//Add Skill to position
-	public void addSkill(Position position, Skill skill) {
+	public void addSkill(Position position, String skill) {
 		// get the all the current skills listed for position
-		List<Skill> skills = position.getSkills();
+		List<String> skills = position.getSkills();
 		
 		// Add the skill
 		skills.add(skill);
@@ -32,8 +31,53 @@ public class PositionService {
 	}
 	
 	// Remove Skill from position
-	public void removeSKill(Position position, Skill skill) {
+	public void removeSkill(Position position, String skill) {
 		position.getSkills().remove(skill);
 		this.pRepo.save(position);
+	}
+	
+	public List<String> getSkills(Position position) {
+		List<String> skills = position.getSkills();
+		return skills;
+	}
+	
+	public String getSkillOne(Position position) {
+		String skill = position.getSkillOne();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillTwp(Position position) {
+		String skill = position.getSkillTwo();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillThree(Position position) {
+		String skill = position.getSkillThree();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillFour(Position position) {
+		String skill = position.getSkillFour();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillFive(Position position) {
+		String skill = position.getSkillFive();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
 	}
 }

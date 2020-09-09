@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +19,6 @@ import com.dennislee.devsondeck.models.Organization;
 import com.dennislee.devsondeck.models.User;
 import com.dennislee.devsondeck.services.OrganizationService;
 import com.dennislee.devsondeck.services.PositionService;
-import com.dennislee.devsondeck.services.SkillService;
 import com.dennislee.devsondeck.services.UserService;
 import com.dennislee.devsondeck.uservalidator.OrgValidator;
 import com.dennislee.devsondeck.uservalidator.UserValidator;
@@ -33,9 +34,6 @@ public class MainController {
 	
 	@Autowired
 	private PositionService pService;
-	
-	@Autowired
-	private SkillService sService;
 	
 	@Autowired
 	private UserValidator uValidator;
@@ -82,12 +80,31 @@ public class MainController {
 		}
 	}
 	
-	@RequestMapping("/devs/skills/languages")
-	public String languagesPage(Model viewModel, HttpSession session) {
+//	@RequestMapping("/devs/skills/languages")
+//	public String languagesPage(Model viewModel, HttpSession session) {
+//		User user = (User) session.getAttribute("user_s");
+//		session.setAttribute("user_s", user);
+//		viewModel.addAttribute("user", user);
+//		return "language.jsp";
+//	}
+	
+	@GetMapping("/devs/skills/{type}")
+	public String userProfile(@PathVariable("type") String type, HttpSession session, Model viewModel) {
 		User user = (User) session.getAttribute("user_s");
-		session.setAttribute("user_s", user);
-		viewModel.addAttribute("user", user);
-		return "language.jsp";
+		if(user == null) {
+			return "redirect:/devs/login";
+		}
+		else {
+			session.setAttribute("user_s", user);
+			viewModel.addAttribute("user", user);
+			viewModel.addAttribute("type", type);
+			if (type.equals("languages") || type.equals("frameworks")){
+				return "userDashboard.jsp";
+			}
+			else {
+				return "redirect:/devs/login";
+			}
+		}
 	}
 	
 	@RequestMapping("/orgs/register")
@@ -124,7 +141,7 @@ public class MainController {
 		else {
 			Organization org = this.oService.getByEmail(email);
 			session.setAttribute("organization_s", org);
-			System.out.println("You have logged in as Organization:" + org.getOrgName());
+//			System.out.println("You have logged in as Organization:" + org.getOrgName());
 			return "redirect:/orgs/dashboard";
 		}
 	}
@@ -132,9 +149,14 @@ public class MainController {
 	@RequestMapping("/orgs/dashboard")
 	public String orgDashbaord(Model viewModel, HttpSession session) {
 		Organization organization = (Organization) session.getAttribute("organization_s");
-		session.setAttribute("organization_s", organization);
-		viewModel.addAttribute("organization", organization);
-		return "orgDashboard.jsp";
+		if (organization == null) {
+			return "redirect:/orgs/login";
+		}
+		else {
+			session.setAttribute("organization_s", organization);
+			viewModel.addAttribute("organization", organization);
+			return "orgDashboard.jsp";
+		}
 	}
 	
 	@RequestMapping("/logout/org")

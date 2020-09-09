@@ -6,7 +6,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dennislee.devsondeck.models.Skill;
 import com.dennislee.devsondeck.models.User;
 import com.dennislee.devsondeck.repositories.UserRepository;
 
@@ -54,9 +53,9 @@ public class UserService {
 	}
 	
 	//Add Skill to user
-	public void addSkill(User user, Skill skill) {
+	public void addSkill(User user, String skill) {
 		// get the all the current user's skills
-		List<Skill> skills = user.getSkills();
+		List<String> skills = user.getSkills();
 		
 		// Add the skill
 		skills.add(skill);
@@ -66,8 +65,53 @@ public class UserService {
 	}
 	
 	// Remove Skill from user
-	public void removeSKill(User user, Skill skill) {
+	public void removeSkill(User user, String skill) {
 		user.getSkills().remove(skill);
 		this.uRepo.save(user);
+	}
+	
+	public List<String> getSkills(User user) {
+		List<String> skills = user.getSkills();
+		return skills;
+	}
+	
+	public String getSkillOne(User user) {
+		String skill = user.getSkillOne();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillTwp(User user) {
+		String skill = user.getSkillTwo();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillThree(User user) {
+		String skill = user.getSkillThree();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillFour(User user) {
+		String skill = user.getSkillFour();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
+	}
+	
+	public String getSkillFive(User user) {
+		String skill = user.getSkillFive();
+		if (skill == null) {
+			skill = "";
+		}
+		return skill;
 	}
 }
